@@ -2,7 +2,9 @@ package com.hendisantika.config;
 
 import com.hendisantika.exception.UnAuthorizedUserAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,4 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UnAuthorizedUserAuthenticationEntryPoint authenticationEntryPoint;
 
     private final SecurityFilter secFilter;
+
+    //Required in case of Stateless Authentication
+    @Override
+    @Bean
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
 }
