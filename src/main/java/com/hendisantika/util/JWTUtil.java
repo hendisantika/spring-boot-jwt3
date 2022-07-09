@@ -58,4 +58,9 @@ public class JWTUtil {
         String tokenUserName = getSubject(token);
         return (username.equals(tokenUserName) && !isTokenExpired(token));
     }
+
+    // code to check if token is expired
+    public boolean isTokenExpired(String token) {
+        return getExpirationDate(token).before(new Date(System.currentTimeMillis()));
+    }
 }
