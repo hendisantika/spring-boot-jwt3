@@ -63,4 +63,9 @@ public class JWTUtil {
     public boolean isTokenExpired(String token) {
         return getExpirationDate(token).before(new Date(System.currentTimeMillis()));
     }
+
+    //code to get expiration date
+    public Date getExpirationDate(String token) {
+        return getClaims(token).getExpiration();
+    }
 }
