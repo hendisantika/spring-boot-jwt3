@@ -1,5 +1,6 @@
 package com.hendisantika.service;
 
+import com.hendisantika.domain.User;
 import com.hendisantika.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,5 +23,11 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepo;
 
     private final BCryptPasswordEncoder bCryptEncoder;
+
+    public Integer saveUser(User user) {
+        //Encode password before saving to DB
+        user.setPassword(bCryptEncoder.encode(user.getPassword()));
+        return userRepo.save(user).getId();
+    }
 
 }
