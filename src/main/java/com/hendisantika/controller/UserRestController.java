@@ -1,11 +1,14 @@
 package com.hendisantika.controller;
 
 import com.hendisantika.domain.User;
+import com.hendisantika.dto.UserRequest;
+import com.hendisantika.dto.UserResponse;
 import com.hendisantika.service.UserService;
 import com.hendisantika.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,5 +39,14 @@ public class UserRestController {
         String message = "User with id '" + id + "' saved successfully!";
         //return new ResponseEntity<String>(message, HttpStatus.OK);
         return ResponseEntity.ok(message);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(@RequestBody UserRequest request) {
+        //Validate username/password with DB(required in case of Stateless Authentication)
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                request.getUsername(), request.getPassword()));
+        String token = JWTUtil.generateToken(request.getUsername());
+        return ResponseEntity.ok(new UserResponse(token, "Token generated successfully!"));
     }
 }
