@@ -3,9 +3,12 @@ package com.hendisantika.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -18,12 +21,16 @@ import java.util.concurrent.TimeUnit;
  * Time: 12:01
  * To change this template use File | Settings | File Templates.
  */
+@Component
 public class JWTUtil {
-    // code to generate Token
-    public static String generateToken(String subject, String secretKey) {
+    @Value("${app.secret.key}")
+    private static String secretKey;
 
+    // code to generate Token
+    public static String generateToken(String subject) {
+        String tokenId = String.valueOf(new Random().nextInt(10000));
         return Jwts.builder()
-                .setId("tk9931")
+                .setId(tokenId)
                 .setSubject(subject)
                 .setIssuer("ABC_Ltd")
                 .setAudience("XYZ_Ltd")
@@ -34,10 +41,15 @@ public class JWTUtil {
     }
 
     //code to get Claims
-    public static Claims getClaims(String token, String secretKey) {
+    public static Claims getClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(Base64.getEncoder().encode(secretKey.getBytes()))
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    // code to check if token is valid
+    public boolean isValidToken(String token) {
+        return getClaims(token).getExpiration().after(new Date(System.currentTimeMillis()));
     }
 }

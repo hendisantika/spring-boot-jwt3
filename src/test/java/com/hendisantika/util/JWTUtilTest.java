@@ -22,7 +22,7 @@ class JWTUtilTest {
     @Test
     public void generateTokenTest() {
         // code to test generated Token
-        String token = JWTUtil.generateToken("Token1", secretKey);
+        String token = JWTUtil.generateToken("Token1");
         System.out.println("------------------------TOKEN----------------------------------------------------");
         System.out.println(token);
         System.out.println();
