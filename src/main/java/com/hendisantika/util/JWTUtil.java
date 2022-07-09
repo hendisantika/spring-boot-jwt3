@@ -52,4 +52,10 @@ public class JWTUtil {
     public boolean isValidToken(String token) {
         return getClaims(token).getExpiration().after(new Date(System.currentTimeMillis()));
     }
+
+    // code to check if token is valid as per username
+    public boolean isValidToken(String token, String username) {
+        String tokenUserName = getSubject(token);
+        return (username.equals(tokenUserName) && !isTokenExpired(token));
+    }
 }
