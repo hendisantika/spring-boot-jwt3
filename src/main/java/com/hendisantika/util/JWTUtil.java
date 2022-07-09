@@ -68,4 +68,9 @@ public class JWTUtil {
     public Date getExpirationDate(String token) {
         return getClaims(token).getExpiration();
     }
+
+    //code to get expiration date
+    public String getSubject(String token) {
+        return getClaims(token).getSubject();
+    }
 }
