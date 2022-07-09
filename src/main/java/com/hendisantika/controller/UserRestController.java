@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : spring-boot-jwt3
@@ -48,5 +50,10 @@ public class UserRestController {
                 request.getUsername(), request.getPassword()));
         String token = JWTUtil.generateToken(request.getUsername());
         return ResponseEntity.ok(new UserResponse(token, "Token generated successfully!"));
+    }
+
+    @PostMapping("/getInfo")
+    public ResponseEntity<String> testAfterLogin(Principal p) {
+        return ResponseEntity.ok("You are accessing data after a valid Login. You are :" + p.getName());
     }
 }
